@@ -90,6 +90,7 @@ textarea{
   flex-direction:column;
   backdrop-filter:blur(18px);
   box-shadow:8px 0 35px rgba(31,41,55,.035)
+  
 }
 
 .brand{
@@ -174,26 +175,29 @@ textarea{
   background:var(--green);
   box-shadow:0 0 0 3px rgba(16,185,129,.10)
 }
-
 .side-nav{
-  display:grid;
-  gap:3px
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin-top:8px;
 }
 
 .side-nav a{
-  position:relative;
-  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  min-height:36px;
+  padding:6px 15px;
+  border-radius:5px;
   color:var(--muted);
-  font-size:12px;
-  border-radius:10px;
-  transition:.2s
+  font-size:14px;
+  transition:.2s;
 }
 
 .side-nav a:hover,
 .side-nav a.active{
   background:#f3f0ff;
   color:var(--purple);
-  font-weight:700
+  font-weight:700;
 }
 
 .side-nav a.active:before{
@@ -204,41 +208,42 @@ textarea{
   bottom:8px;
   width:3px;
   border-radius:3px;
-  background:linear-gradient(var(--purple),var(--blue))
+  background:linear-gradient(var(--purple),var(--blue));
 }
+
 
 /* =========================
    SIDEBAR RESUME
 ========================= */
 
 .side-resume{
-  margin-top:15px;
-  padding:13px;
+  margin-top:10px;
+  padding:11px;
   border:1px solid #ddd5ff;
   border-radius:14px;
   background:linear-gradient(135deg,#f5f1ff,#eff7ff);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px
+  gap:8px;
 }
 
 .side-resume-title{
   font-size:9px;
   letter-spacing:.15em;
   color:var(--purple);
-  font-weight:900
+  font-weight:900;
 }
 
 .side-resume p{
   font-size:9px;
   color:var(--muted);
-  margin:2px 0 0
+  margin:2px 0 0;
 }
 
 .side-resume-actions{
   display:flex;
-  gap:5px
+  gap:5px;
 }
 
 .side-resume-actions a{
@@ -248,29 +253,30 @@ textarea{
   border:1px solid var(--line);
   font-size:9px;
   color:var(--text);
-  transition:.2s
+  transition:.2s;
 }
 
 .side-resume-actions a:first-child{
   background:linear-gradient(100deg,var(--purple),var(--blue));
   color:#fff;
-  border:0
+  border:0;
 }
 
 .side-resume-actions a:hover{
   transform:translateY(-2px);
-  box-shadow:var(--shadow)
+  box-shadow:var(--shadow);
 }
 
 .side-resume-actions svg{
   width:13px;
   height:13px;
-  display:block
+  display:block;
 }
 
 .side-resume-actions a:last-child{
-  flex:0 0 34px
+  flex:0 0 34px;
 }
+
 
 /* =========================
    SOCIAL
@@ -278,11 +284,13 @@ textarea{
 
 .side-socials{
   display:flex;
+  align-items:center;
   gap:6px;
   flex-wrap:wrap;
-  margin-top:auto;
-  padding-top:14px;
-  border-top:1px solid var(--line)
+  margin-top:8px;
+  margin-bottom:2px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
 }
 
 .side-socials a{
@@ -290,25 +298,27 @@ textarea{
   align-items:center;
   gap:6px;
   padding:6px 8px;
-  border:1px solid transparent;
+  border:1px solid var(--line);
   border-radius:8px;
+  background:#fff;
   font-size:10px;
   color:var(--muted);
-  transition:.2s
+  transition:.2s;
 }
 
 .side-socials a svg{
   width:14px;
   height:14px;
-  fill:currentColor
+  fill:currentColor;
+  flex:0 0 auto;
 }
 
 .side-socials a:hover{
   color:var(--purple);
   background:#f3f0ff;
-  border-color:#e5defe
+  border-color:#e5defe;
+  transform:translateY(-2px);
 }
-
 .footer-social-link{
   display:flex!important;
   align-items:center;
