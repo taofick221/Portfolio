@@ -1,0 +1,547 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {% block title %}
+      {{ site_settings.seo_title|default:site_settings.site_name|default:"Taofick Portfolio" }}
+    {% endblock %}
+  </title>
+
+  <meta
+    name="description"
+    content="{{ site_settings.seo_description|default:'Backend-focused software engineering portfolio.' }}"
+  >
+
+  <meta name="theme-color" content="#f6f7fb">
+
+  <link
+    rel="icon"
+    href="{% static 'img/favicon.svg' %}"
+  >
+
+  <link
+    rel="stylesheet"
+    href="{% static 'css/site.css' %}"
+  >
+</head>
+
+
+<body>
+
+  <!-- Background glow -->
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
+
+
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Brand -->
+    <div class="brand">
+
+      <span class="brand-mark">
+        &lt;/&gt;
+      </span>
+
+      <div>
+        <strong>
+          {{ site_settings.site_name|default:"TAOFICK" }}
+        </strong>
+
+        <small>
+          {{ site_settings.accent_label|default:"Backend Developer" }}
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Mobile close button -->
+    <button
+      class="mobile-close"
+      id="closeMenu"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+
+
+    <!-- Profile -->
+    <div class="side-profile">
+
+      {% if profile.photo %}
+
+        <img
+          src="{{ profile.photo.url }}"
+          alt="{{ profile.name }}"
+        >
+
+      {% else %}
+
+        <div class="avatar-fallback">
+          TM
+        </div>
+
+      {% endif %}
+
+
+      <strong>
+        {{ profile.name|default:"MD. TAOFICK" }}
+      </strong>
+
+
+      <span class="availability">
+
+        <i></i>
+
+        {% if profile.available_for_work %}
+          Available for opportunities
+        {% else %}
+          Currently unavailable
+        {% endif %}
+
+      </span>
+
+    </div>
+
+
+    <!-- Navigation -->
+    <nav
+      class="side-nav"
+      aria-label="Primary navigation"
+    >
+
+      <a href="{% url 'home' %}#home">
+        Home
+      </a>
+
+      <a href="{% url 'home' %}#about">
+        About
+      </a>
+
+      <a href="{% url 'home' %}#skills">
+        Skills
+      </a>
+
+      <a href="{% url 'project_list' %}">
+        Projects
+      </a>
+
+      <a href="{% url 'home' %}#education">
+        Education
+      </a>
+
+      <a href="{% url 'home' %}#research">
+        Research
+      </a>
+
+      <a href="{% url 'blog_list' %}">
+        Blog
+      </a>
+
+      <a href="{% url 'contact' %}">
+        Contact
+      </a>
+
+    </nav>
+
+
+    <!-- Resume -->
+    {% if profile.resume %}
+
+    <div class="side-resume">
+
+      <div>
+
+        <div class="side-resume-title">
+          RESUME
+        </div>
+
+        <p>
+          View my latest resume
+        </p>
+
+      </div>
+
+
+      <div class="side-resume-actions">
+
+        <a href="{% url 'resume' %}">
+          View Resume
+        </a>
+
+
+        <a
+          href="{{ profile.resume.url }}"
+          download
+          aria-label="Download resume"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 4v10M8 11l4 4 4-4M5 19h14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+        </a>
+
+      </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Social links -->
+    <div class="side-socials">
+
+      {% for social in social_links %}
+
+      <a
+        href="{{ social.url }}"
+        target="_blank"
+        rel="noopener"
+        aria-label="{{ social.get_platform_display }}"
+      >
+
+        {% if social.platform == "github" %}
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M12 .7a11.3 11.3 0 0 0-3.57 22c.57.1.78-.25.78-.55v-2.1c-3.18.7-3.85-1.34-3.85-1.34-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.74 2.67 1.24 3.32.95.1-.74.4-1.24.73-1.53-2.54-.29-5.2-1.27-5.2-5.67 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.12 1.18a10.7 10.7 0 0 1 5.68 0c2.16-1.49 3.12-1.18 3.12-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.41-2.67 5.37-5.21 5.66.41.35.78 1.04.78 2.1v3.13c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/>
+          </svg>
+
+        {% elif social.platform == "linkedin" %}
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M5.2 3.7a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2ZM3.4 9.3h3.6v11.3H3.4V9.3ZM9.2 9.3h3.4v1.55h.05c.47-.89 1.62-1.83 3.34-1.83 3.58 0 4.24 2.36 4.24 5.43v6.15h-3.55v-5.45c0-1.3-.02-2.97-1.81-2.97-1.82 0-2.1 1.42-2.1 2.88v5.54H9.2V9.3Z"/>
+          </svg>
+
+        {% elif social.platform == "email" %}
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M3.5 5.5h17v13h-17v-13Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+
+            <path
+              d="m4.5 7 7.5 5.5L19.5 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+        {% else %}
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="8.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+
+            <path
+              d="M8 12h8M12 8v8"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+
+        {% endif %}
+
+        <span>
+          {{ social.get_platform_display }}
+        </span>
+
+      </a>
+
+      {% endfor %}
+
+    </div>
+
+  </aside>
+
+
+  <!-- =========================
+       MOBILE TOP BAR
+  ========================== -->
+
+  <div class="mobile-top">
+
+    <button
+      id="openMenu"
+      class="menu-btn"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
+
+
+    <span>
+      {{ site_settings.site_name|default:"TAOFICK" }}
+    </span>
+
+
+    <a
+      class="mobile-resume"
+      href="{% url 'resume' %}"
+    >
+      CV
+    </a>
+
+  </div>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main class="main">
+
+    <!-- Messages -->
+    {% if messages %}
+
+    <div class="toast-stack">
+
+      {% for message in messages %}
+
+      <div class="toast">
+        {{ message }}
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Page content -->
+    {% block content %}
+    {% endblock %}
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+      <div class="footer-top">
+
+
+        <!-- Footer brand -->
+        <div>
+
+          <div class="footer-brand">
+            TAOFICK<span>.</span>
+          </div>
+
+          <p>
+            {{ site_settings.footer_text|default:"Backend-focused software engineer building reliable and maintainable systems." }}
+          </p>
+
+        </div>
+
+
+        <!-- Footer links -->
+        <div class="footer-links">
+
+
+          <!-- Explore -->
+          <div>
+
+            <small>
+              EXPLORE
+            </small>
+
+            <a href="{% url 'home' %}#about">
+              About
+            </a>
+
+            <a href="{% url 'project_list' %}">
+              Projects
+            </a>
+
+            <a href="{% url 'blog_list' %}">
+              Blog
+            </a>
+
+            <a href="{% url 'home' %}#skills">
+              Skills
+            </a>
+
+            <a href="{% url 'contact' %}">
+              Contact
+            </a>
+
+          </div>
+
+
+          <!-- Connect -->
+          <div>
+
+            <small>
+              CONNECT
+            </small>
+
+
+            {% for social in social_links %}
+
+            <a
+              class="footer-social-link"
+              href="{{ social.url }}"
+              target="_blank"
+              rel="noopener"
+            >
+
+              <span class="social-mini-icon">
+
+                {% if social.platform == "github" %}
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 .7a11.3 11.3 0 0 0-3.57 22c.57.1.78-.25.78-.55v-2.1c-3.18.7-3.85-1.34-3.85-1.34-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.74 2.67 1.24 3.32.95.1-.74.4-1.24.73-1.53-2.54-.29-5.2-1.27-5.2-5.67 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.12 1.18a10.7 10.7 0 0 1 5.68 0c2.16-1.49 3.12-1.18 3.12-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.41-2.67 5.37-5.21 5.66.41.35.78 1.04.78 2.1v3.13c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/>
+                  </svg>
+
+                {% elif social.platform == "linkedin" %}
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M5.2 3.7a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2ZM3.4 9.3h3.6v11.3H3.4V9.3ZM9.2 9.3h3.4v1.55h.05c.47-.89 1.62-1.83 3.34-1.83 3.58 0 4.24 2.36 4.24 5.43v6.15h-3.55v-5.45c0-1.3-.02-2.97-1.81-2.97-1.82 0-2.1 1.42-2.1 2.88v5.54H9.2V9.3Z"/>
+                  </svg>
+
+                {% elif social.platform == "email" %}
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3.5 5.5h17v13h-17v-13Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+
+                    <path
+                      d="m4.5 7 7.5 5.5L19.5 7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+
+                {% else %}
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="8.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+
+                    <path
+                      d="M8 12h8M12 8v8"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+
+                {% endif %}
+
+              </span>
+
+              {{ social.get_platform_display }}
+
+            </a>
+
+            {% endfor %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer bottom -->
+      <div class="footer-bottom">
+
+        <span>
+          © {% now "Y" %}
+          {{ profile.name|default:"Taofick" }}.
+          All rights reserved.
+        </span>
+
+        <span>
+          Designed & built with Django.
+        </span>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+
+  <!-- Main JavaScript -->
+  <script src="{% static 'js/site.js' %}"></script>
+
+
+  <!-- Page-specific JavaScript -->
+  {% block extra_js %}
+  {% endblock %}
+
+</body>
+</html>

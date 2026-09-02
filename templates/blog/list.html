@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}
+Blog — {{ site_settings.site_name|default:"Taofick Portfolio" }}
+{% endblock %}
+
+
+{% block content %}
+
+<section class="blog-page">
+
+    <!-- =========================
+         BLOG HERO
+    ========================== -->
+
+    <section class="blog-hero section compact">
+
+        <span class="eyebrow">
+            BLOG
+        </span>
+
+        <h1>
+            Notes & <span>ideas.</span>
+        </h1>
+
+        <p>
+            Thoughts, technical notes, lessons learned,
+            and practical experiences from my journey in software engineering.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         POSTS
+    ========================== -->
+
+    <section class="section compact blog-posts-section">
+
+        {% if posts %}
+
+        <div class="blog-list">
+
+            {% for post in posts %}
+
+            <article class="blog-post-card">
+
+                <!-- Cover -->
+
+                <a
+                    href="{% url 'blog_detail' post.slug %}"
+                    class="blog-post-cover"
+                    aria-label="Read {{ post.title }}"
+                >
+
+                    {% if post.cover %}
+
+                        <img
+                            src="{{ post.cover.url }}"
+                            alt="{{ post.title }}"
+                            loading="lazy"
+                        >
+
+                    {% else %}
+
+                        <div class="blog-cover-fallback">
+
+                            <span>
+                                TAOFICK
+                            </span>
+
+                            <strong>
+                                &lt;/&gt;
+                            </strong>
+
+                        </div>
+
+                    {% endif %}
+
+                    <div class="blog-cover-overlay">
+                        <span>Read article →</span>
+                    </div>
+
+                </a>
+
+
+                <!-- Content -->
+
+                <div class="blog-post-body">
+
+                    <div class="blog-post-meta">
+
+                        <span>
+                            {{ post.published_at|date:"F j, Y" }}
+                        </span>
+
+                        <i></i>
+
+                        <span>
+                            Technical Notes
+                        </span>
+
+                    </div>
+
+
+                    <h2>
+
+                        <a
+                            href="{% url 'blog_detail' post.slug %}"
+                        >
+                            {{ post.title }}
+                        </a>
+
+                    </h2>
+
+
+                    {% if post.excerpt %}
+
+                    <p class="blog-post-excerpt">
+                        {{ post.excerpt }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <a
+                        href="{% url 'blog_detail' post.slug %}"
+                        class="blog-read-link"
+                    >
+                        Read article
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M5 12h13M13 6l6 6-6 6"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state blog-empty">
+
+            <strong>
+                No published posts yet.
+            </strong>
+
+            <span>
+                Add your first article from Django Admin → Blog → Posts.
+            </span>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Projects — Portfolio{% endblock %}
+{% block content %}
+<section class="page-hero section compact"><span class="eyebrow">03 / PROJECTS</span><h1>Selected <span>projects.</span></h1><p>Real applications, experiments and backend systems.</p></section>
+<section class="section compact">
+  <div class="filter-bar"><a class="{% if not active_category %}active{% endif %}" href="{% url 'project_list' %}">All</a>{% for cat in categories %}<a class="{% if active_category|lower == cat|lower %}active{% endif %}" href="?category={{ cat|urlencode }}">{{ cat }}</a>{% endfor %}</div>
+  <div class="project-grid">{% for project in projects %}{% include "projects/_card.html" with project=project %}{% empty %}<div class="empty-state">No projects found.</div>{% endfor %}</div>
+</section>
+{% endblock %}

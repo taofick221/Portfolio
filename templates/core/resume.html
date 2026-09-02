@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Resume — {{ profile_obj.name|default:"Taofick" }}
+{% endblock %}
+
+{% block content %}
+
+<section class="resume-page section">
+
+    <div class="resume-page-head">
+
+        <div>
+
+            <a class="back-link" href="{% url 'home' %}">
+                ← Back to home
+            </a>
+
+            <span class="eyebrow">
+                RESUME
+            </span>
+
+            <h1>
+                My professional resume.
+            </h1>
+
+            <p>
+                View my latest resume below or download the PDF for later.
+            </p>
+
+        </div>
+
+
+        {% if resume_available %}
+
+        <a
+            class="btn primary resume-download"
+            href="{{ profile_obj.resume.url }}"
+            download
+        >
+
+            <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M12 3v12"></path>
+                <path d="m7 10 5 5 5-5"></path>
+                <path d="M5 21h14"></path>
+            </svg>
+
+            Download PDF
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if resume_available %}
+
+    <div class="resume-viewer-card">
+
+        <div class="resume-viewer-toolbar">
+
+            <span>
+                Latest Resume
+            </span>
+
+            <a
+                href="{{ profile_obj.resume.url }}"
+                target="_blank"
+                rel="noopener"
+            >
+                Open in new tab ↗
+            </a>
+
+        </div>
+
+
+        <div
+            id="resumeViewer"
+            class="resume-viewer"
+            data-pdf-url="{{ profile_obj.resume.url }}"
+        >
+
+            <div class="resume-loading">
+                Loading resume...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state resume-empty">
+
+        <strong>
+            Resume is not available yet.
+        </strong>
+
+        <span>
+            Upload the latest PDF from Django Admin → Profile.
+        </span>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{% if resume_available %}
+
+<script type="module">
+
+    import {
+        getDocument,
+        GlobalWorkerOptions
+    } from "{% static 'pdfjs/build/pdf.mjs' %}";
+
+
+    GlobalWorkerOptions.workerSrc =
+        "{% static 'pdfjs/build/pdf.worker.mjs' %}";
+
+
+    const viewer =
+        document.getElementById("resumeViewer");
+
+
+    const pdfUrl =
+        viewer.dataset.pdfUrl;
+
+
+    async function renderResume() {
+
+        try {
+
+            const loadingTask =
+                getDocument(pdfUrl);
+
+
+            const pdf =
+                await loadingTask.promise;
+
+
+            viewer.innerHTML = "";
+
+
+            for (
+                let pageNumber = 1;
+                pageNumber <= pdf.numPages;
+                pageNumber++
+            ) {
+
+                const page =
+                    await pdf.getPage(pageNumber);
+
+
+                const containerWidth =
+                    viewer.clientWidth - 64;
+
+
+                const originalViewport =
+                    page.getViewport({
+                        scale: 1
+                    });
+
+
+                const scale =
+                    Math.min(
+                        1.8,
+                        containerWidth / originalViewport.width
+                    );
+
+
+                const viewport =
+                    page.getViewport({
+                        scale: scale
+                    });
+
+
+                const canvas =
+                    document.createElement("canvas");
+
+
+                const context =
+                    canvas.getContext("2d");
+
+
+                canvas.width =
+                    viewport.width;
+
+
+                canvas.height =
+                    viewport.height;
+
+
+                canvas.className =
+                    "resume-page-canvas";
+
+
+                viewer.appendChild(canvas);
+
+
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Resume PDF error:",
+                error
+            );
+
+
+            viewer.innerHTML = `
+
+                <div class="resume-error">
+
+                    <strong>
+                        Unable to display the resume here.
+                    </strong>
+
+                    <p>
+                        Please use the buttons above to open
+                        or download the PDF.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    renderResume();
+
+</script>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load blog_extras %}
+
+{% block title %}
+{{ post.title }} — {{ site_settings.site_name|default:"Taofick Portfolio" }}
+{% endblock %}
+
+
+{% block content %}
+
+<article class="blog-detail-page">
+
+    <!-- Article Header -->
+
+    <section class="blog-detail-hero section compact">
+
+        <a
+            href="{% url 'blog_list' %}"
+            class="back-link"
+        >
+            ← All posts
+        </a>
+
+
+        <div class="blog-detail-meta">
+
+            <span class="eyebrow">
+                ARTICLE
+            </span>
+
+            <span class="blog-detail-date">
+                {{ post.published_at|date:"F j, Y" }}
+            </span>
+
+        </div>
+
+
+        <h1>
+            {{ post.title }}
+        </h1>
+
+
+        {% if post.excerpt %}
+
+        <p class="blog-detail-excerpt">
+            {{ post.excerpt }}
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Cover -->
+
+    {% if post.cover %}
+
+    <section class="section compact blog-detail-cover-section">
+
+        <div class="blog-detail-cover">
+
+            <img
+                src="{{ post.cover.url }}"
+                alt="{{ post.title }}"
+            >
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- Article Content -->
+
+    <section class="section compact blog-reading-section">
+
+        <div class="blog-reading-layout">
+
+            <div class="article-content blog-content">
+
+                {{ post.content|render_markdown }}
+
+            </div>
+
+
+            <!-- Article Sidebar -->
+
+            <aside class="blog-article-sidebar">
+
+                <div class="blog-side-card">
+
+                    <span class="eyebrow">
+                        ARTICLE
+                    </span>
+
+                    <strong>
+                        {{ post.title }}
+                    </strong>
+
+                    <div class="blog-side-divider"></div>
+
+                    <span class="blog-side-date">
+                        Published {{ post.published_at|date:"F j, Y" }}
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="{% url 'blog_list' %}"
+                    class="blog-back-card"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            More articles
+                        </strong>
+
+                        <small>
+                            Back to the blog
+                        </small>
+
+                    </div>
+
+                </a>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+
+    <!-- Article Footer -->
+
+    <section class="section compact blog-detail-footer">
+
+        <div>
+
+            <span class="eyebrow">
+                THANKS FOR READING
+            </span>
+
+            <h2>
+                More notes coming soon.
+            </h2>
+
+        </div>
+
+
+        <a
+            href="{% url 'blog_list' %}"
+            class="btn primary"
+        >
+
+            View all articles
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+            >
+                <path
+                    d="M5 12h13M13 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+
+        </a>
+
+    </section>
+
+</article>
+
+{% endblock %}

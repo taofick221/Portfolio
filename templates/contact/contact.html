@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Contact — Portfolio{% endblock %}
+{% block content %}
+<section class="page-hero section compact"><span class="eyebrow">06 / CONTACT</span><h1>Let's build something <span>useful.</span></h1><p>{{ contact_info.intro|default:"Have an idea, project or opportunity? Send me a message." }}</p></section>
+<section class="section compact contact-grid">
+  <div class="contact-details"><div><small>Email</small><strong>{{ contact_info.email|default:profile.email }}</strong></div><div><small>Phone</small><strong>{{ contact_info.phone|default:profile.phone }}</strong></div><div><small>Location</small><strong>{{ contact_info.location|default:profile.location }}</strong></div></div>
+  <form method="post" class="contact-form">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<label>{{ field.label }}{{ field }}{{ field.errors }}</label>{% endfor %}<button class="btn primary" type="submit">Send Message →</button></form>
+</section>
+{% endblock %}
