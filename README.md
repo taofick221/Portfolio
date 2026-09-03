@@ -74,7 +74,6 @@ The portfolio uses **Django Admin as a content management system**, allowing the
 - GitHub
 - Postman
 - Linux
-- Python Virtual Environment
 
 ### Additional Technologies
 
