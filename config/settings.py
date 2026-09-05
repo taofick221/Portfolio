@@ -7,8 +7,19 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load local .env if it exists.
-# Vercel uses its own Environment Variables.
+
+# =========================================================
+# LOAD ENVIRONMENT VARIABLES
+# =========================================================
+#
+# Local development:
+#     Uses .env
+#
+# Vercel:
+#     Uses Vercel Environment Variables
+#
+# =========================================================
+
 load_dotenv(BASE_DIR / ".env")
 
 
@@ -21,7 +32,10 @@ SECRET_KEY = os.getenv(
     "dev-secret-change-this",
 )
 
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+DEBUG = os.getenv(
+    "DEBUG",
+    "True",
+).lower() == "true"
 
 
 # =========================================================
@@ -38,7 +52,7 @@ ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv(
         "ALLOWED_HOSTS",
-        default_allowed_hosts
+        default_allowed_hosts,
     ).split(",")
     if host.strip()
 ]
@@ -49,6 +63,7 @@ ALLOWED_HOSTS = [
 # =========================================================
 
 INSTALLED_APPS = [
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -56,6 +71,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Cloudinary
+    "cloudinary_storage",
+    "cloudinary",
+
+    # Portfolio apps
     "core",
     "portfolio",
     "projects",
@@ -87,12 +107,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
 
         "DIRS": [
-            BASE_DIR / "templates"
+            BASE_DIR / "templates",
         ],
 
         "APP_DIRS": True,
@@ -109,7 +130,12 @@ TEMPLATES = [
 ]
 
 
+# =========================================================
+# WSGI / ASGI
+# =========================================================
+
 WSGI_APPLICATION = "config.wsgi.application"
+
 ASGI_APPLICATION = "config.asgi.application"
 
 
@@ -120,14 +146,16 @@ ASGI_APPLICATION = "config.asgi.application"
 # Local:
 #     SQLite
 #
-# Vercel:
+# Production:
 #     Neon PostgreSQL through DATABASE_URL
 #
 # =========================================================
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+
 if DATABASE_URL:
+
     DATABASES = {
         "default": dj_database_url.parse(
             DATABASE_URL,
@@ -137,6 +165,7 @@ if DATABASE_URL:
     }
 
 else:
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -171,26 +200,71 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    BASE_DIR / "static",
 ]
+
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-# WhiteNoise
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
-
-
 # =========================================================
-# MEDIA FILES
+# CLOUDINARY MEDIA STORAGE
+# =========================================================
+#
+# Images and other uploaded media are stored in Cloudinary
+# instead of the local/Vercel filesystem.
+#
+# Credentials come from environment variables.
+#
 # =========================================================
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / "media"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv(
+        "CLOUDINARY_CLOUD_NAME"
+    ),
+
+    "API_KEY": os.getenv(
+        "CLOUDINARY_API_KEY"
+    ),
+
+    "API_SECRET": os.getenv(
+        "CLOUDINARY_API_SECRET"
+    ),
+}
+
+
+# =========================================================
+# DJANGO STORAGE BACKENDS
+# =========================================================
+#
+# default:
+#     Cloudinary for uploaded media
+#
+# staticfiles:
+#     WhiteNoise for static files
+#
+# =========================================================
+
+STORAGES = {
+    "default": {
+        "BACKEND": (
+            "cloudinary_storage.storage."
+            "MediaCloudinaryStorage"
+        ),
+    },
+
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage."
+            "CompressedManifestStaticFilesStorage"
+        ),
+    },
+}
 
 
 # =========================================================
@@ -198,6 +272,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 # =========================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# =========================================================
+# LOGIN
+# =========================================================
 
 LOGIN_URL = "/admin/login/"
 
@@ -211,12 +290,17 @@ SECURE_REFERRER_POLICY = os.getenv(
     "strict-origin-when-cross-origin",
 )
 
+
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
 
 X_FRAME_OPTIONS = "DENY"
 
 
-# HTTPS security only in production
+# =========================================================
+# PRODUCTION HTTPS SECURITY
+# =========================================================
+
 if not DEBUG:
 
     SECURE_SSL_REDIRECT = True

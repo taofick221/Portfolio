@@ -84,6 +84,9 @@ textarea{
   width:var(--sidebar-width);
   z-index:50;
   padding:22px 18px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
   background:rgba(255,255,255,.92);
   border-right:1px solid var(--line);
   display:flex;
@@ -178,11 +181,12 @@ textarea{
 .side-nav{
   display:flex;
   flex-direction:column;
-  gap:0;
-  margin-top:8px;
+  gap:2px;
+  margin-top:4px;
 }
 
 .side-nav a{
+  position:relative;
   display:flex;
   align-items:center;
   min-height:36px;
@@ -217,6 +221,7 @@ textarea{
 ========================= */
 
 .side-resume{
+  flex-shrink:0;
   margin-top:10px;
   padding:11px;
   border:1px solid #ddd5ff;
@@ -283,6 +288,7 @@ textarea{
 ========================= */
 
 .side-socials{
+  flex-shrink:0;
   display:flex;
   align-items:center;
   gap:6px;
@@ -663,6 +669,118 @@ textarea{
 .skill-icon-item:hover img{
   transform:translateY(-4px) scale(1.04);
   box-shadow:0 13px 25px rgba(31,41,55,.14)
+}
+
+/* =========================
+   EXPERIENCE
+========================= */
+
+.experience-list{
+  display:grid;
+  gap:14px;
+}
+
+.experience-card{
+  display:grid;
+  grid-template-columns:155px minmax(0,1fr);
+  gap:24px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  transition:.25s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.experience-card:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,var(--purple),var(--blue),var(--cyan));
+}
+
+.experience-card:hover{
+  transform:translateY(-4px);
+  border-color:#d8d0ff;
+  box-shadow:var(--shadow-hover);
+}
+
+.experience-date{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:3px;
+  padding-left:5px;
+  padding-top:3px;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.experience-date span:first-child{
+  color:var(--purple);
+  font-weight:800;
+}
+
+.experience-arrow{
+  color:var(--line-strong);
+  font-size:12px;
+}
+
+.experience-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.experience-content h3{
+  margin:0;
+  font-size:19px;
+  line-height:1.3;
+  letter-spacing:-.025em;
+}
+
+.experience-company{
+  margin:4px 0 0;
+  color:var(--purple);
+  font-size:11px;
+  font-weight:700;
+}
+
+.experience-description{
+  margin:13px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.75;
+  max-width:850px;
+}
+
+.experience-status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  flex:0 0 auto;
+  padding:5px 8px;
+  border:1px solid #ccefe0;
+  border-radius:999px;
+  background:#ecfdf5;
+  color:#059669;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+.experience-status i{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--green);
 }
 
 /* =========================
@@ -1450,6 +1568,7 @@ textarea{
   .sidebar{
     transform:translateX(-105%);
     width:280px;
+    padding:18px 16px;
     transition:.25s;
     box-shadow:20px 0 60px rgba(31,41,55,.18)
   }
@@ -1563,6 +1682,40 @@ textarea{
   .project-grid,
   .academic-grid{
     grid-template-columns:1fr
+  }
+
+  .experience-card{
+    grid-template-columns:1fr;
+    gap:12px;
+    padding:18px;
+  }
+
+  .experience-date{
+    flex-direction:row;
+    align-items:center;
+    gap:7px;
+    padding-left:0;
+  }
+
+  .experience-arrow{
+    font-size:11px;
+  }
+
+  .experience-top{
+    display:block;
+  }
+
+  .experience-status{
+    margin-top:10px;
+  }
+
+  .experience-content h3{
+    font-size:18px;
+  }
+
+  .experience-description{
+    font-size:11px;
+    line-height:1.7;
   }
 
   .skill-group{
